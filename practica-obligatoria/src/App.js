@@ -1,7 +1,7 @@
 import "./App.css";
 import React from 'react';
 import Table from './ejercicio2/Table'; 
-import Tarea from './ejercicio3/Tarea';
+import Login from './ejercicio3/Login';
 const netIncomes = [
   { brand: 'McDonalds', income: 1291283 },
   { brand: 'Burger King', income: 1927361 },
@@ -14,7 +14,7 @@ function App() {
       <h1>Ejercicio 2</h1>
       <h2>Tabla de Ingresos</h2>
       <Table netIncomes={netIncomes} />
-      <Tarea />
+      <Login />
     </div>
   );
 }
