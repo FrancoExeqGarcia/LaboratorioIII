@@ -24,7 +24,6 @@ function Login() {
 
   return (
     <div>
-      <h1>Ejercicio 3 </h1>
       <input
         type="text"
         placeholder="Nombre de usuario"
