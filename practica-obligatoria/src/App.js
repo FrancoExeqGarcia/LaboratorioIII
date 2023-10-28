@@ -1,9 +1,9 @@
 import "./App.css";
-import React, { useState } from 'react';
-import Table from './ejercicio2/Table'; 
-import Login from './ejercicio3/Login';
-import TaskList from './ejercicio4/TaskList';
-import TaskForm from './ejercicio4/TaskForm';
+import React, { useState, useEffect } from 'react';
+import Table from './components/ejercicio2/Table'; 
+import Login from './components/ejercicio3/Login';
+import TaskList from './components/ejercicio4/TaskList';
+import TaskForm from './components/ejercicio4/TaskForm';
 const netIncomes = [
   { brand: 'McDonalds', income: 1291283 },
   { brand: 'Burger King', income: 1927361 },
@@ -14,6 +14,26 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [tasks, setTasks] = useState([]);
   const [newTaskText, setNewTaskText] = useState('');
+  const [firstTimeUser, setFirstTimeUser] = useState(true);
+
+  useEffect(() => {
+    if (localStorage.getItem('hasUsedApp')) {
+      setFirstTimeUser(false);
+    } else {
+      localStorage.setItem('hasUsedApp', 'true');
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  }, [tasks]);
+
+  useEffect(() => {
+    const storedTasks = JSON.parse(localStorage.getItem('tasks'));
+    if (storedTasks) {
+      setTasks(storedTasks);
+    }
+  }, []);
 
   const handleLogin = () => {
     setIsLoggedIn(true);
@@ -22,6 +42,7 @@ function App() {
   const handleLogout = () => {
     setIsLoggedIn(false);
   };
+
   const addTask = (text) => {
     if (text.trim() !== '') {
       const newTask = {
@@ -29,8 +50,10 @@ function App() {
         completed: false,
       };
       setTasks([...tasks, newTask]);
+      setNewTaskText('');
     }
   };
+
   return (
 
     <div className="App">
@@ -40,13 +63,12 @@ function App() {
       
       <h1>Ejercicio 3 </h1>
       <Login />
-
-      <h1>Ejercicio 4 usando Login de ejercicio3</h1>
+      <h1>Ejercicio 4 usando Login de ejercicio 3</h1>
       {isLoggedIn ? (
         <div>
           <button onClick={handleLogout}>Cerrar sesión</button>
           <h2>Lista de Tareas</h2>
-          <TaskList tasks={tasks} setTasks={setTasks} />
+          <TaskList tasks={tasks} setTasks={setTasks} firstTimeUser={firstTimeUser} />
           <TaskForm newTaskText={newTaskText} setNewTaskText={setNewTaskText} addTask={addTask} />
         </div>
       ) : (
